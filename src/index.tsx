@@ -1,13 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider } from 'styled-components';
+
+//import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './core/service-worker'
+import { Card, Content, Grid, NewButton, Numbers, Title } from './components';
+import { configureStore } from 'core'; 
+import { GlobalStyles, theme } from './styles';
+
+const { persistor, store} = configureStore();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <GlobalStyles />
+    <Provider store={store}>
+      <PersistGate loading={null} persistor = {persistor}>
+        <Content data-cy="content">
+          <Title data-cy="title">Sudoku</Title>
+          <Card data-cy="card">
+            <NewButton />
+            <Grid />
+            <Numbers />
+          </Card>
+        </Content>
+      </PersistGate>
+
+    </Provider>
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
